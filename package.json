@@ -8,7 +8,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "prepare": "husky"
   },
   "dependencies": {
     "@react-navigation/bottom-tabs": "^7.7.3",
@@ -38,7 +39,9 @@
     "react-native-web": "~0.21.0"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.4.7",
     "@types/react": "~19.2.2",
+    "husky": "^9.1.7",
     "typescript": "~5.9.2"
   },
   "private": true
