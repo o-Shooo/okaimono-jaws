@@ -30,11 +30,16 @@
 
 ```
 src/
-  app/          # Expo Router ルート（ファイルベースルーティング）
-  components/   # 再利用可能なUIコンポーネント
-  constants/    # 定数・テーマ
-  hooks/        # カスタムフック
-assets/         # 画像・フォント等の静的ファイル
+  app/            # 画面（Expo Router ファイルベースルーティング）
+    (auth)/       # 認証画面（ログイン）
+    (tabs)/       # タブ画面（買い物リスト・購入履歴）
+  components/     # 再利用UIコンポーネント
+  hooks/          # データ取得・更新（Supabase連携）
+  lib/            # 外部サービス設定（Supabaseクライアント）
+  stores/         # グローバル状態管理（Zustand）
+  types/          # TypeScript型定義（自動生成）
+  constants/      # 定数・テーマ（色・サイズなど）
+assets/           # 画像・フォント等の静的ファイル
 ```
 
 ## 開発環境セットアップ

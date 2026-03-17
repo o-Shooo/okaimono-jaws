@@ -1,17 +1,10 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { Redirect } from 'expo-router'
+import { useAuthStore } from '../stores/auth'
 
 export default function Index() {
-  return (
-    <View style={styles.container}>
-      <Text>Edit src/app/index.tsx to edit this screen.</Text>
-    </View>
-  )
-}
+  const { session, loading } = useAuthStore()
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-})
+  if (loading) return null
+  if (!session) return <Redirect href="/(auth)/login" />
+  return <Redirect href="/(tabs)" />
+}
