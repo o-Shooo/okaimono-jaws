@@ -1,33 +1,46 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
 
 export type ShoppingListItem = {
   id: string
-  quantity: number
-  planned_date: string | null
-  products: {
-    name: string
-    unit_size: number | null
-    unit_type: string | null
-  } | null
-  stores: {
-    name: string
-  } | null
+  name: string
 }
 
 export function useShoppingList() {
   const [items, setItems] = useState<ShoppingListItem[]>([])
 
-  useEffect(() => {
-    supabase
+  const fetchItems = useCallback(async () => {
+    const { data } = await supabase
       .from('shopping_list_items')
-      .select(
-        'id, quantity, planned_date, products(name, unit_size, unit_type), stores:planned_store_id(name)',
-      )
-      .then(({ data }) => {
-        if (data) setItems(data as ShoppingListItem[])
-      })
+      .select('id, name')
+      .order('created_at', { ascending: true })
+    if (data) setItems(data as ShoppingListItem[])
   }, [])
 
-  return { items }
+  useEffect(() => {
+    fetchItems()
+  }, [fetchItems])
+
+  async function addItem(name: string): Promise<void> {
+    await supabase.from('shopping_list_items').insert({ name })
+  }
+
+  async function deleteItem(id: string): Promise<void> {
+    await supabase.from('shopping_list_items').delete().eq('id', id)
+    setItems((prev) => prev.filter((item) => item.id !== id))
+  }
+
+  async function updateItemName(id: string, newName: string): Promise<void> {
+    await supabase.from('shopping_list_items').update({ name: newName }).eq('id', id)
+    setItems((prev) => prev.map((item) => (item.id === id ? { ...item, name: newName } : item)))
+  }
+
+  async function deleteAll(): Promise<void> {
+    const ids = items.map((item) => item.id)
+    if (ids.length === 0) return
+    await supabase.from('shopping_list_items').delete().in('id', ids)
+    setItems([])
+  }
+
+  return { items, addItem, updateItemName, deleteItem, deleteAll, refetch: fetchItems }
 }

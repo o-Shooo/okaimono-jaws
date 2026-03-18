@@ -131,49 +131,25 @@ export type Database = {
         Row: {
           added_by: string
           created_at: string
-          household_id: string
+          household_id: string | null
           id: string
-          planned_date: string | null
-          planned_store_id: string | null
-          product_id: string
-          quantity: number
+          name: string
         }
         Insert: {
-          added_by: string
+          added_by?: string
           created_at?: string
-          household_id: string
+          household_id?: string | null
           id?: string
-          planned_date?: string | null
-          planned_store_id?: string | null
-          product_id: string
-          quantity?: number
+          name?: string
         }
         Update: {
           added_by?: string
           created_at?: string
-          household_id?: string
+          household_id?: string | null
           id?: string
-          planned_date?: string | null
-          planned_store_id?: string | null
-          product_id?: string
-          quantity?: number
+          name?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: 'shopping_list_items_planned_store_id_fkey'
-            columns: ['planned_store_id']
-            isOneToOne: false
-            referencedRelation: 'stores'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'shopping_list_items_product_id_fkey'
-            columns: ['product_id']
-            isOneToOne: false
-            referencedRelation: 'products'
-            referencedColumns: ['id']
-          },
-        ]
+        Relationships: []
       }
       stores: {
         Row: {

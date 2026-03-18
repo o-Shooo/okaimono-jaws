@@ -17,7 +17,9 @@ export function initializeAuth() {
     useAuthStore.setState({ session, loading: false })
   })
 
-  const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+  const {
+    data: { subscription },
+  } = supabase.auth.onAuthStateChange((_event, session) => {
     useAuthStore.setState({ session })
   })
 

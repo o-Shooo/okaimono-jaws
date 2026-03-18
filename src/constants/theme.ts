@@ -16,6 +16,8 @@ export const colors = {
 
   border: '#E0D8CE',
   placeholder: '#B5A99A',
+
+  whiteAlpha20: 'rgba(255, 255, 255, 0.2)',
 }
 
 export const spacing = {
@@ -41,5 +43,26 @@ export const fontSize = {
 
 export const layout = {
   minTouchTarget: 44,
-  tabBarHeight: 56,
+  tabBarHeight: 64,
+  logoSize: 80,
+  buttonHeight: 52,
+}
+
+export const iconSize = {
+  xs: 18,
+  sm: 20,
+  md: 24,
+  lg: 26,
+  tab: 28,
+  logo: 40,
+  hero: 64,
+}
+
+export const opacity = {
+  disabled: 0.7,
+}
+
+export const elevation = {
+  card: '0 1px 4px rgba(0, 0, 0, 0.08)',
+  float: '0 4px 12px rgba(0, 0, 0, 0.10)',
 }
