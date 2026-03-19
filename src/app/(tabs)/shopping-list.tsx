@@ -16,6 +16,7 @@ import {
   colors,
   elevation,
   fontSize,
+  fontWeight,
   iconSize,
   layout,
   radius,
@@ -135,8 +136,8 @@ export default function ListScreen() {
           }}
         >
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: spacing.sm }}>
-            <Ionicons name="checkmark-circle" size={iconSize.xs} color="#fff" />
-            <Text style={{ color: '#fff', fontSize: fontSize.footnote, fontWeight: '600' }}>
+            <Ionicons name="checkmark-circle" size={iconSize.xs} color={colors.white} />
+            <Text style={{ color: colors.white, fontSize: fontSize.footnote, fontWeight: fontWeight.semibold }}>
               全部買えた！
             </Text>
           </View>
@@ -149,7 +150,7 @@ export default function ListScreen() {
               borderRadius: radius.pill,
             }}
           >
-            <Text style={{ color: '#fff', fontSize: fontSize.caption, fontWeight: '600' }}>
+            <Text style={{ color: colors.white, fontSize: fontSize.caption, fontWeight: fontWeight.semibold }}>
               空にする
             </Text>
           </Pressable>
@@ -209,7 +210,7 @@ export default function ListScreen() {
             onPress={handleSubmit}
             disabled={!canSubmit}
           >
-            <Ionicons name="add" size={iconSize.md} color="#fff" />
+            <Ionicons name="add" size={iconSize.md} color={colors.white} />
           </Pressable>
         </View>
       </Animated.View>

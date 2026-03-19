@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons'
 import { useEffect, useRef, useState } from 'react'
-import { Pressable, Text, TextInput } from 'react-native'
+import { Pressable, Text, TextInput, useWindowDimensions } from 'react-native'
 import { Gesture, GestureDetector } from 'react-native-gesture-handler'
 import Animated, {
   FadeInLeft,
@@ -11,7 +11,8 @@ import Animated, {
   withSpring,
   withTiming,
 } from 'react-native-reanimated'
-import { colors, elevation, fontSize, iconSize, layout, radius, spacing } from '../constants/theme'
+import { borderWidth, colors, fontSize, fontWeight, iconSize, opacity, spacing } from '../constants/theme'
+import { commonStyles } from '../constants/styles'
 import type { ShoppingListItem } from '../hooks/useShoppingList'
 
 type Props = {
@@ -23,15 +24,17 @@ type Props = {
 }
 
 const SWIPE_THRESHOLD = 80
-const SCREEN_WIDTH = 500
+const FLICK_VELOCITY_THRESHOLD = 800
+const ANIMATION_DURATION = 200
 
 export function ShoppingListCard({ item, checked, onToggle, onDelete, onEdit }: Props) {
+  const { width } = useWindowDimensions()
   const [isEditing, setIsEditing] = useState(false)
   const [editText, setEditText] = useState(item.name)
   const editInputRef = useRef<TextInput>(null)
 
   const iconScale = useSharedValue(1)
-  const textOpacity = useSharedValue(checked ? 0.4 : 1)
+  const textOpacity = useSharedValue(checked ? opacity.checked : 1)
   const translateX = useSharedValue(0)
   const cardOpacity = useSharedValue(1)
 
@@ -39,7 +42,7 @@ export function ShoppingListCard({ item, checked, onToggle, onDelete, onEdit }: 
     iconScale.value = withSpring(1.2, { damping: 10, stiffness: 300 }, () => {
       iconScale.value = withSpring(1, { damping: 12, stiffness: 300 })
     })
-    textOpacity.value = withTiming(checked ? 0.4 : 1, { duration: 200 })
+    textOpacity.value = withTiming(checked ? opacity.checked : 1, { duration: ANIMATION_DURATION })
   }, [checked, textOpacity, iconScale])
 
   const iconAnimStyle = useAnimatedStyle(() => ({
@@ -83,11 +86,11 @@ export function ShoppingListCard({ item, checked, onToggle, onDelete, onEdit }: 
       cardOpacity.value = 1 - Math.min(Math.abs(e.translationX) / (SWIPE_THRESHOLD * 2), 0.5)
     })
     .onEnd((e) => {
-      const shouldDelete = Math.abs(e.translationX) > SWIPE_THRESHOLD || Math.abs(e.velocityX) > 800
+      const shouldDelete = Math.abs(e.translationX) > SWIPE_THRESHOLD || Math.abs(e.velocityX) > FLICK_VELOCITY_THRESHOLD
       if (shouldDelete) {
-        const flyTo = e.translationX > 0 ? SCREEN_WIDTH : -SCREEN_WIDTH
-        translateX.value = withTiming(flyTo, { duration: 200 })
-        cardOpacity.value = withTiming(0, { duration: 200 }, () => {
+        const flyTo = e.translationX > 0 ? width : -width
+        translateX.value = withTiming(flyTo, { duration: ANIMATION_DURATION })
+        cardOpacity.value = withTiming(0, { duration: ANIMATION_DURATION }, () => {
           runOnJS(onDelete)(item.id)
         })
       } else {
@@ -101,17 +104,13 @@ export function ShoppingListCard({ item, checked, onToggle, onDelete, onEdit }: 
       <GestureDetector gesture={panGesture}>
         <Animated.View style={cardAnimStyle}>
           <Pressable
-            style={{
-              backgroundColor: colors.surface,
-              borderRadius: radius.card,
+            style={[commonStyles.card, {
               paddingVertical: spacing.md,
               paddingHorizontal: spacing.md,
               flexDirection: 'row',
               alignItems: 'center',
               gap: spacing.md,
-              boxShadow: elevation.card,
-              minHeight: layout.minTouchTarget,
-            }}
+            }]}
             onPress={() => !isEditing && onToggle(item.id)}
             onLongPress={handleLongPress}
             delayLongPress={400}
@@ -130,11 +129,11 @@ export function ShoppingListCard({ item, checked, onToggle, onDelete, onEdit }: 
                 style={{
                   flex: 1,
                   fontSize: fontSize.callout,
-                  fontWeight: '500',
+                  fontWeight: fontWeight.medium,
                   color: colors.textPrimary,
-                  borderBottomWidth: 1,
+                  borderBottomWidth: borderWidth.thin,
                   borderBottomColor: colors.primary,
-                  paddingVertical: 2,
+                  paddingVertical: spacing.xxs,
                 }}
                 value={editText}
                 onChangeText={setEditText}
@@ -150,7 +149,7 @@ export function ShoppingListCard({ item, checked, onToggle, onDelete, onEdit }: 
                     fontSize: fontSize.callout,
                     color: colors.textPrimary,
                     textDecorationLine: checked ? 'line-through' : 'none',
-                    fontWeight: '500',
+                    fontWeight: fontWeight.medium,
                   }}
                 >
                   {item.name}

@@ -1,5 +1,4 @@
 // https://developer.apple.com/design/human-interface-guidelines
-
 export const colors = {
   primary: '#1E3932',
   primaryLight: '#D4E9E2',
@@ -17,10 +16,12 @@ export const colors = {
   border: '#E0D8CE',
   placeholder: '#B5A99A',
 
+  white: '#ffffff',
   whiteAlpha20: 'rgba(255, 255, 255, 0.2)',
 }
 
 export const spacing = {
+  xxs: 2,
   xs: 4,
   sm: 8,
   md: 16,
@@ -29,7 +30,6 @@ export const spacing = {
 }
 
 export const radius = {
-  input: 12,
   card: 16,
   pill: 9999,
 }
@@ -39,6 +39,12 @@ export const fontSize = {
   footnote: 14,
   callout: 16,
   title: 28,
+}
+
+export const fontWeight = {
+  medium: '500' as const,
+  semibold: '600' as const,
+  bold: '700' as const,
 }
 
 export const layout = {
@@ -60,6 +66,11 @@ export const iconSize = {
 
 export const opacity = {
   disabled: 0.7,
+  checked: 0.4,
+}
+
+export const borderWidth = {
+  thin: 1,
 }
 
 export const elevation = {
